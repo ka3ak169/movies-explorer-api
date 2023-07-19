@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const errorMiddleware = require('./middlewares/errorMiddleware');
 const moviesRouter = require('./routers/movies');
 const usersRouter = require('./routers/users');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const {
   login,
   createUser,
@@ -19,12 +20,15 @@ mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb', {
 
 const app = express();
 app.use(express.json());
+app.use(requestLogger);
 
 app.post('/signin', login);
 app.post('/signup', createUser);
 
 app.use(moviesRouter);
 app.use(usersRouter);
+
+app.use(errorLogger);
 
 app.use(errorMiddleware);
 

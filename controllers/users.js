@@ -12,9 +12,16 @@ const { UnauthorizedError } = require('../utils/UnauthorizedError');
 const SALT_ROUNDS = 10;
 
 const createUser = (req, res, next) => {
+  console.log(req.body);
   const {
     name, email, password,
   } = req.body;
+
+  if (!password) {
+    const badRequestError = new BadRequestError('Не предоставлен пароль');
+    next(badRequestError);
+    return;
+  }
 
   bcrypt.hash(password, SALT_ROUNDS, (err, hash) => {
     if (err) {
@@ -30,6 +37,7 @@ const createUser = (req, res, next) => {
         res.send({ user: userData });
       })
       .catch((error) => {
+        console.log(error.message);
         if (error.code === 11000) {
           const conflictError = new ConflictError('Пользователь с таким email уже существует');
           next(conflictError);

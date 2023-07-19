@@ -6,7 +6,7 @@ const { ForbiddenError } = require('../utils/ForbiddenError');
 const { NotFoundError } = require('../utils/NotFoundError');
 const { UnauthorizedError } = require('../utils/UnauthorizedError');
 const { movieParams } = require('../utils/constants');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
 // Получение списка фильмов
 const getMovies = (req, res, next) => {
@@ -39,7 +39,7 @@ const postMovies = (req, res, next) => {
     .catch((error) => {
       if (error.name === 'ValidationError') {
         console.log(error.errors); // подробные ошибки валидации
-        next(new BadRequestError('Переданы некорректные данные карточки'));
+        next(new BadRequestError('Переданы некорректные данные фильма'));
       } else {
         next(error);
       }
