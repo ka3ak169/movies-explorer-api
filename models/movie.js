@@ -71,7 +71,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       // Только кириллица
-      validator: (v) => /^[а-яёЁ\-]+$/i.test(v),
+      validator: (v) => /^[а-яёЁ\s\-]+$/i.test(v),
       message: 'Только кириллица',
     },
   },
@@ -81,7 +81,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       // Только латиница
-      validator: (v) => /^[a-z\-]+$/i.test(v),
+      validator: (v) => /^[a-z\s\-]+$/i.test(v),
       message: 'Только латиница',
     },
   },
