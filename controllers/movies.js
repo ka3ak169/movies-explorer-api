@@ -61,10 +61,10 @@ const deleteMovies = (req, res, next) => {
         return;
       }
 
-      // if (movie.owner && movie.owner.toString() !== userId) {
-      //   next(new ForbiddenError('Доступ запрещен'));
-      //   return;
-      // }
+      if (movie.owner && movie.owner.toString() !== userId) {
+        next(new ForbiddenError('Доступ запрещен'));
+        return;
+      }
 
       Movie.findByIdAndRemove(moviesId)
         .then((deletedMovie) => res.send(deletedMovie))
