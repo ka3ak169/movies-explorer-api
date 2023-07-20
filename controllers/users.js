@@ -12,7 +12,6 @@ const { UnauthorizedError } = require('../utils/UnauthorizedError');
 const SALT_ROUNDS = 10;
 
 const createUser = (req, res, next) => {
-  console.log(req.body);
   const {
     name, email, password,
   } = req.body;
@@ -34,10 +33,9 @@ const createUser = (req, res, next) => {
     })
       .then((user) => {
         const { password, ...userData } = user.toObject();
-        res.send({ user: userData });
+        res.send({ user: userData, message: 'Успешная регистрация' });
       })
       .catch((error) => {
-        console.log(error.message);
         if (error.code === 11000) {
           const conflictError = new ConflictError('Пользователь с таким email уже существует');
           next(conflictError);
@@ -52,9 +50,7 @@ const createUser = (req, res, next) => {
 };
 
 const login = (req, res, next) => {
-  // console.log(req.body);
   const { email, password } = req.body;
-  // console.log(req.body);
 
   User.findOne({ email })
     .select('+password')
@@ -70,7 +66,6 @@ const login = (req, res, next) => {
             next(new UnauthorizedError('Неправильные почта или пароль'));
             return;
           }
-          console.log(user);
           req.user = user;
 
           const id = user._id.toString();
@@ -93,7 +88,7 @@ const getUserInformation = (req, res, next) => {
         next(new NotFoundError('Пользователь не найден'));
         return;
       }
-      res.send({ data: user }); // должен вернуть имя и email
+      res.send({ data: user });
     })
     .catch((error) => next(error));
 };
