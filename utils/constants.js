@@ -8,6 +8,12 @@ const userValidationSchema = {
   }),
 };
 
+// Массив доменов, с которых разрешены кросс-доменные запросы
+const allowedCors = [
+  '*',
+];
+
 module.exports = {
   userValidationSchema,
+  allowedCors,
 };
