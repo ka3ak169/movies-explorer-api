@@ -40,6 +40,7 @@ const createUser = (req, res, next) => {
           const conflictError = new ConflictError('Пользователь с таким email уже существует');
           next(conflictError);
         } else if (error.name === 'ValidationError') {
+          console.log(error);
           const badRequestError = new BadRequestError('Переданы некорректные данные пользователя');
           next(badRequestError);
         } else {
@@ -112,6 +113,8 @@ const updateUserProfile = (req, res, next) => {
     .catch((error) => {
       if (error.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные обновления профиля'));
+      } else if (error.code === 11000) {
+        next(new ConflictError('Пользователь с таким email уже существует'));
       } else {
         next(error);
       }

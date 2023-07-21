@@ -21,7 +21,7 @@ const errorMiddleware = (err, req, res, next) => {
     message = err.message || 'Доступ запрещен';
   } else if (err instanceof NotFoundError) {
     statusCode = err.statusCode || statusCode;
-    message = err.message || 'Пользователь не найден';
+    message = err.message || 'Запрашиваемый ресурс не найден';
   } else if (err instanceof ConflictError) {
     statusCode = err.statusCode || statusCode;
     message = err.message || 'Конфликт данных';

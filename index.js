@@ -12,25 +12,34 @@ const {
   createUser,
 } = require('./controllers/users');
 require('dotenv').config();
+const { NotFoundError } = require('./utils/NotFoundError');
 
 const { PORT = 3000 } = process.env;
+let dbUri = 'mongodb://127.0.0.1:27017/bitfilmsdb';
+if (process.env.NODE_ENV === 'production') {
+  dbUri = process.env.MONGODB_URI;
+}
 
 // Подключение к серверу MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb', {
+mongoose.connect(dbUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 const app = express();
+app.use(requestLogger); // подключаем логгер запросов
 app.use(express.json());
 app.use(corsMiddleware);
-app.use(requestLogger); // подключаем логгер запросов
 
-app.post('/signin', login);
+app.post('/signin', celebrate(userValidationSchema), login);
 app.post('/signup', celebrate(userValidationSchema), createUser);
 
 app.use(moviesRouter);
 app.use(usersRouter);
+
+app.use((req, res, next) => {
+  next(new NotFoundError('Запрашиваемый ресурс не найден'));
+});
 
 app.use(errorLogger); // подключаем логгер ошибок
 

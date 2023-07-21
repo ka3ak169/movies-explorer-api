@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Movie = require('../models/movie');
 
 const { BadRequestError } = require('../utils/BadRequestError');
@@ -8,9 +9,11 @@ const { UnauthorizedError } = require('../utils/UnauthorizedError');
 
 // Получение списка фильмов
 const getMovies = (req, res, next) => {
+  const userId = req.user.id;
   Movie.find({})
     .then((movies) => {
-      res.send(movies);
+      const userMovies = movies.filter((movie) => movie.owner.toString() === userId);
+      res.send(userMovies);
     })
     .catch((error) => {
       if (error.name === 'UnauthorizedError') {
@@ -59,7 +62,13 @@ const deleteMovies = (req, res, next) => {
         .then((deletedMovie) => res.send(deletedMovie))
         .catch((error) => next(error));
     })
-    .catch((error) => next(error));
+    .catch((error) => {
+      if (error instanceof mongoose.Error.CastError) {
+        next(new BadRequestError('Некорректный идентификатор'));
+      } else {
+        next(error);
+      }
+    });
 };
 
 module.exports = {
