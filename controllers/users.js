@@ -40,7 +40,6 @@ const createUser = (req, res, next) => {
           const conflictError = new ConflictError('Пользователь с таким email уже существует');
           next(conflictError);
         } else if (error.name === 'ValidationError') {
-          console.log(error);
           const badRequestError = new BadRequestError('Переданы некорректные данные пользователя');
           next(badRequestError);
         } else {

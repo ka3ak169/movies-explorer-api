@@ -34,7 +34,6 @@ const postMovies = (req, res, next) => {
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        console.log(error.errors);
         next(new BadRequestError('Переданы некорректные данные фильма'));
       } else {
         next(error);
