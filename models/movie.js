@@ -69,21 +69,21 @@ const movieSchema = new mongoose.Schema({
   nameRU: {
     type: String,
     required: true,
-    validate: {
-      // Только кириллица
-      validator: (v) => /^[а-яёЁ\s\-]+$/i.test(v),
-      message: 'Только кириллица',
-    },
+    // validate: {
+    //   // Только кириллица
+    //   validator: (v) => /^[а-яёЁ\s\-]+$/i.test(v),
+    //   message: 'Только кириллица',
+    // },
   },
 
   nameEN: {
     type: String,
     required: true,
-    validate: {
-      // Только латиница
-      validator: (v) => /^[a-z\s\-]+$/i.test(v),
-      message: 'Только латиница',
-    },
+    // validate: {
+    //   // Только латиница
+    //   validator: (v) => /^[a-z\s\-]+$/i.test(v),
+    //   message: 'Только латиница',
+    // },
   },
 });
 

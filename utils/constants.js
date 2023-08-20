@@ -20,18 +20,20 @@ const movieValidationSchema = {
     thumbnail: Joi.string().required().uri(),
     owner: Joi.string().required().alphanum().length(24),
     movieId: Joi.number().required(),
-    nameRU: Joi.string().required().custom((value, helpers) => {
-      if (/^[а-яёЁ\s\-]+$/i.test(value)) {
-        return value;
-      }
-      return helpers.message('Только кириллица');
-    }),
-    nameEN: Joi.string().required().custom((value, helpers) => {
-      if (/^[a-z\s\-]+$/i.test(value)) {
-        return value;
-      }
-      return helpers.message('Только латиница');
-    }),
+    // nameRU: Joi.string().required().custom((value, helpers) => {
+    //   if (/^[а-яёЁ\s\-]+$/i.test(value)) {
+    //     return value;
+    //   }
+    //   return helpers.message('Только кириллица');
+    // }),
+    nameRU: Joi.string().required(),
+    // nameEN: Joi.string().required().custom((value, helpers) => {
+    //   if (/^[a-z\s\-]+$/i.test(value)) {
+    //     return value;
+    //   }
+    //   return helpers.message('Только латиница');
+    // }),
+    nameEN: Joi.string().required(),
   }),
 };
 
@@ -54,8 +56,14 @@ const userProfileValidationSchema = {
 // ];
 
 const allowedCors = [
+  'http://localhost:3000',
   'http://localhost:3001',
+  'https://localhost:3000',
+  'https://localhost:3001',
   'http://127.0.0.1:3001',
+  'https://127.0.0.1:3001',
+  'https://diploma-folio.nomoredomainsicu.ru',
+  'http://diploma-folio.nomoredomainsicu.ru',
   '*',
 ];
 
